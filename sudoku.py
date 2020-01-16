@@ -1,11 +1,13 @@
 # Start writing a method in sudoku solving
+# Based on a simple 9 * 9 sudoku puzzle with square 3 * 3 subgrids
+
 import numpy as np
 import copy
 
 def get_subgrid(sudoku, i, j):
     """
     return a subgrid from any number in the sudoku grid
-    by it's row number i and column number
+    by it's row number i and column number j
     """
     i = i//3
     j = j//3
@@ -13,7 +15,10 @@ def get_subgrid(sudoku, i, j):
     return sudoku[reference[i][0]:reference[i][1], reference[j][0]:reference[j][1]]
 
 def newbee_lvl(sudoku):
-
+    """
+    This function can only calculate value by numbers' only existence in it's row, column and subgrid.
+    So this function can do nothing with values that need assumption.
+    """
     for i in range(9): # Column elements
         for j in range(9): # Row elements
             if sudoku[i][j] == 0:
@@ -27,7 +32,9 @@ def newbee_lvl(sudoku):
                     sudoku[i][j] = list(possible_nums)[0]
 
 def sample():
-
+    """
+    add sample numpy array for test
+    """
     easy = np.array([[0,0,0,3,0,9,0,0,5],
                      [5,0,0,0,0,0,1,0,2],
                      [0,0,3,0,4,5,6,0,7],
@@ -44,9 +51,11 @@ def newbee_solution(sudoku):
     while True:
         comparison = copy.deepcopy(sudoku)
         newbee_lvl(sudoku)
-        if (comparison == sudoku).all():
+        if (comparison == sudoku).all() and (sudoku != 0).all():
             print("Simple sudoku fill complete!")
             break
+        elif (comparison == sudoku).all() and (sudoku != 0).any():
+            print("Simple method can do no better!")
         else:
             print(sudoku)
             print('------------')
